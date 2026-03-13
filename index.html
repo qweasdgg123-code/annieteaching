@@ -17,7 +17,7 @@
 body{font-family:"Noto Serif TC",serif;background:var(--paper);color:var(--ink);min-height:100vh}
 header{background:var(--ink);position:relative;overflow:hidden}
 .stripe{height:5px;background:repeating-linear-gradient(90deg,var(--red) 0,var(--red) 40px,var(--gold) 40px,var(--gold) 80px,var(--green) 80px,var(--green) 120px,var(--blue) 120px,var(--blue) 160px)}
-.hbody{padding:32px 48px 28px;display:flex;align-items:center;gap:20px;max-width:1160px;margin:0 auto}
+.hbody{padding:32px 48px 28px;display:flex;align-items:center;gap:20px;max-width:1200px;margin:0 auto}
 .hlogo{font-size:2.4rem;line-height:1}
 .hinfo h1{font-size:1.55rem;font-weight:900;color:#fff;letter-spacing:.1em;line-height:1.2}
 .hinfo .sub{font-size:.75rem;color:rgba(255,255,255,.45);margin-top:5px;font-family:"DM Mono",monospace;letter-spacing:.06em}
@@ -29,8 +29,10 @@ header{background:var(--ink);position:relative;overflow:hidden}
 @keyframes slide{from{background-position:100% 0}to{background-position:-100% 0}}
 .err{background:#fde8e4;border-left:4px solid var(--red);padding:12px 24px;font-size:.84rem;color:var(--red);display:none;align-items:center;gap:8px}
 .err.on{display:flex}
-.wrap{max-width:1160px;margin:0 auto;padding:36px 24px 80px;display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
-.sidebar{position:sticky;top:20px;display:flex;flex-direction:column;gap:12px}
+.wrap{max-width:1200px;margin:0 auto;padding:36px 24px 80px;display:grid;grid-template-columns:280px 1fr;gap:32px;align-items:start}
+.sidebar{position:sticky;top:20px;display:flex;flex-direction:column;gap:10px;max-height:calc(100vh - 24px);overflow-y:scroll;padding-right:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--sand);border-radius:4px}
 .sbox{position:relative}
 .sbox input{width:100%;padding:10px 12px 10px 34px;border:1.5px solid var(--sand);border-radius:8px;background:var(--cream);font-family:"Noto Serif TC",serif;font-size:.84rem;color:var(--ink);outline:none;transition:border-color .15s}
 .sbox input::placeholder{color:var(--muted)}
@@ -45,10 +47,19 @@ header{background:var(--ink);position:relative;overflow:hidden}
 .ltag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:var(--blue);color:#fff;font-size:.74rem}
 .ltag button{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:12px;padding:0;line-height:1}
 .ltag button:hover{color:#fff}
-.panel{background:var(--cream);border:1.5px solid var(--sand);border-radius:10px;padding:16px}
-.ptitle{font-size:.66rem;letter-spacing:.14em;color:var(--muted);font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--sand)}
+.era-wrap{position:relative}
+.edrop{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--blue);border-radius:8px;max-height:200px;overflow-y:auto;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.edrop.open{display:block}
+.eopt{padding:7px 14px;font-size:.82rem;cursor:pointer;transition:background .1s;color:var(--ink)}
+.eopt:hover{background:var(--cream)}
+.esel{margin-top:6px}
+.etag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:var(--gold);color:#fff;font-size:.74rem}
+.etag button{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:12px;padding:0;line-height:1}
+.etag button:hover{color:#fff}
+.panel{background:var(--cream);border:1.5px solid var(--sand);border-radius:10px;padding:14px}
+.ptitle{font-size:.65rem;letter-spacing:.14em;color:var(--muted);font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--sand)}
 .chips{display:flex;flex-wrap:wrap;gap:5px}
-.chip{padding:4px 10px;border-radius:999px;border:1.5px solid var(--sand);background:var(--paper);font-size:.76rem;font-family:"Noto Serif TC",serif;color:var(--muted);cursor:pointer;transition:all .13s;user-select:none;line-height:1.5}
+.chip{padding:4px 10px;border-radius:999px;border:1.5px solid var(--sand);background:var(--paper);font-size:.74rem;font-family:"Noto Serif TC",serif;color:var(--muted);cursor:pointer;transition:all .13s;user-select:none;line-height:1.5}
 .chip:hover{border-color:var(--ink);color:var(--ink)}
 .chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
 .rbtn{width:100%;padding:9px 12px;background:transparent;border:1.5px solid var(--sand);border-radius:8px;font-size:.78rem;font-family:"Noto Serif TC",serif;color:var(--muted);cursor:pointer;transition:all .13s}
@@ -60,11 +71,11 @@ header{background:var(--ink);position:relative;overflow:hidden}
 .refbtn:hover{border-color:var(--green);color:var(--green)}
 .refbtn.spin .ri{display:inline-block;animation:spin .8s linear infinite}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px}
-.card{background:#fff;border:1.5px solid var(--sand);border-radius:10px;padding:16px 16px 13px;display:flex;flex-direction:column;gap:9px;transition:transform .14s,box-shadow .14s,border-color .14s;animation:pop .2s ease both;position:relative;overflow:hidden}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.card{background:#fff;border:1.5px solid var(--sand);border-radius:10px;padding:16px 16px 13px;display:flex;flex-direction:column;gap:8px;transition:transform .14s,box-shadow .14s,border-color .14s;animation:pop .2s ease both;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .card[data-t="教學活動"]::before{background:var(--red)}
-.card[data-t="主題式備課法"]::before{background:var(--blue)}
+.card[data-t="主題式備課法"]::before,.card[data-t="主題式備課"]::before{background:var(--blue)}
 .card[data-t="備課"]::before{background:var(--gold)}
 .card[data-t="論文輕閱讀"]::before{background:var(--green)}
 .card[data-t="寫作教學"]::before{background:#8b5cf6}
@@ -75,28 +86,29 @@ header{background:var(--ink);position:relative;overflow:hidden}
 .ctop{display:flex;align-items:flex-start;gap:7px}
 .badge{display:inline-block;font-size:.63rem;padding:2px 7px;border-radius:3px;font-family:"DM Mono",monospace;font-weight:500;white-space:nowrap;flex-shrink:0;margin-top:2px;letter-spacing:.03em}
 .bt-教學活動{background:#fde8e4;color:var(--red)}
-.bt-主題式備課法{background:#dbeafe;color:var(--blue)}
+.bt-主題式備課法,.bt-主題式備課{background:#dbeafe;color:var(--blue)}
 .bt-備課{background:#fef3c7;color:var(--gold)}
 .bt-論文輕閱讀{background:#dcfce7;color:var(--green)}
 .bt-寫作教學{background:#ede9fe;color:#6d28d9}
 .bt-板書分享{background:#cffafe;color:#0e7490}
 .bt-other{background:var(--tag-bg);color:var(--muted)}
-.cname{font-size:.92rem;font-weight:600;line-height:1.5;color:var(--ink)}
-.clesson{font-size:.74rem;color:var(--muted);line-height:1.4;font-style:italic}
-.ctags{display:flex;flex-wrap:wrap;gap:4px;margin-top:1px}
-.tag{font-size:.65rem;padding:1px 7px;border-radius:999px;background:var(--tag-bg);color:var(--muted);border:1px solid var(--sand);font-family:"DM Mono",monospace}
+.cname{font-size:.9rem;font-weight:600;line-height:1.5;color:var(--ink)}
+.clesson{font-size:.73rem;color:var(--muted);line-height:1.4;font-style:italic}
+.cdesc{font-size:.76rem;color:#4a4035;line-height:1.6;background:var(--cream);border-radius:6px;padding:6px 9px;border-left:2px solid var(--sand)}
+.ctags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:.64rem;padding:1px 7px;border-radius:999px;background:var(--tag-bg);color:var(--muted);border:1px solid var(--sand);font-family:"DM Mono",monospace}
 .tag.hi{background:var(--ink);color:#fff;border-color:var(--ink)}
 .cfoot{margin-top:auto;padding-top:9px;border-top:1px solid var(--sand);display:flex;align-items:center;justify-content:space-between;gap:8px}
-.ctime{font-size:.65rem;font-family:"DM Mono",monospace;color:var(--muted);white-space:nowrap}
+.ctime{font-size:.64rem;font-family:"DM Mono",monospace;color:var(--muted);white-space:nowrap}
 .iglink{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-family:"DM Mono",monospace;color:var(--red);text-decoration:none;font-weight:500;transition:gap .12s;white-space:nowrap}
 .iglink:hover{gap:8px;opacity:.8}
 .iglink.na{color:var(--sand);pointer-events:none}
 .empty{grid-column:1/-1;padding:70px 20px;text-align:center;color:var(--muted)}
 .empty .ei{font-size:2.5rem;margin-bottom:10px}
 .empty p{font-size:.9rem;line-height:1.8}
-@media(max-width:700px){
+@media(max-width:750px){
   .wrap{grid-template-columns:1fr;gap:20px}
-  .sidebar{position:static}
+  .sidebar{position:static;max-height:none;overflow-y:visible}
   .hbody{padding:20px}
   .hstat{display:none}
   .wrap{padding:20px 16px 60px}
@@ -120,12 +132,25 @@ header{background:var(--ink);position:relative;overflow:hidden}
   </div>
 </header>
 <div class="err" id="errBanner">⚠️ <span id="errMsg"></span></div>
+
 <div class="wrap">
   <aside class="sidebar">
+
     <div class="sbox">
       <span class="si">🔍</span>
       <input type="text" id="q" placeholder="搜尋活動名稱、關鍵字⋯">
     </div>
+
+    <div class="panel">
+      <div class="ptitle">貼文類型</div>
+      <div class="chips" id="typeC"></div>
+    </div>
+
+    <div class="panel">
+      <div class="ptitle">適用範圍</div>
+      <div class="chips" id="catC"></div>
+    </div>
+
     <div class="panel">
       <div class="ptitle">各課選文</div>
       <div style="position:relative">
@@ -137,11 +162,51 @@ header{background:var(--ink);position:relative;overflow:hidden}
       </div>
       <div class="lsel" id="ls"></div>
     </div>
-    <div class="panel"><div class="ptitle">大類別</div><div class="chips" id="catC"></div></div>
-    <div class="panel"><div class="ptitle">操作時間</div><div class="chips" id="timeC"></div></div>
-    <div class="panel"><div class="ptitle">活動標籤（可多選）</div><div class="chips" id="tagC"></div></div>
+
+    <div class="panel">
+      <div class="ptitle">文白</div>
+      <div class="chips" id="wenyanC"></div>
+    </div>
+
+    <div class="panel">
+      <div class="ptitle">韻文 ／ 非韻文</div>
+      <div class="chips" id="yunC"></div>
+    </div>
+
+    <div class="panel">
+      <div class="ptitle">文類</div>
+      <div class="chips" id="wenleiC"></div>
+      <div id="wentiWrap" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--sand)">
+        <div style="font-size:.64rem;letter-spacing:.1em;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px">▸ 文體</div>
+        <div class="chips" id="wentiC"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ptitle">時代</div>
+      <div class="era-wrap">
+        <div class="sbox">
+          <span class="si">🕰</span>
+          <input type="text" id="ei" placeholder="搜尋時代，例：唐" autocomplete="off">
+        </div>
+        <div class="edrop" id="ed"></div>
+      </div>
+      <div class="esel" id="es"></div>
+    </div>
+
+    <div class="panel">
+      <div class="ptitle">操作時間</div>
+      <div class="chips" id="timeC"></div>
+    </div>
+
+    <div class="panel">
+      <div class="ptitle">活動標籤（可多選）</div>
+      <div class="chips" id="tagC"></div>
+    </div>
+
     <button class="rbtn" id="resetBtn">↺ 清除所有篩選</button>
   </aside>
+
   <main>
     <div class="rbar">
       <div class="rcount">顯示 <strong id="showN">—</strong> 筆</div>
@@ -152,117 +217,259 @@ header{background:var(--ink);position:relative;overflow:hidden}
     </div>
   </main>
 </div>
+
 <script>
 const APPS_URL = 'https://script.google.com/macros/s/AKfycbzMAjZMInaNWuKJhOkB57e9hJTtLxatxmNYzEx_GVhiTzlhSi7XHnmjKrOkj-k0sIvdLA/exec';
 
-let ALL = [], LC = {}, selL = new Set(), selCat = null, selTime = null, selTags = new Set(), qText = '';
+let ALL = [], LC = {};
+let qText = '';
+let selType = null, selCat = null, selWenyan = null, selYun = null;
+let selWenlei = null, selWenti = null, selEra = null, selTime = null;
+let selTags = new Set(), selL = new Set();
+
+const WENLEI_WENTI = {
+  '詩': ['律詩','絕句','古體詩','樂府詩','詩經','五言詩','七言詩','其他'],
+  '詞': ['長調','中調','小令'],
+  '曲': ['散曲','雜劇','傳奇'],
+  '文': ['記','序','書信','疏奏','說','傳記','論','賦','其他'],
+};
 
 async function loadData() {
   document.getElementById('lb').classList.add('on');
   document.getElementById('refBtn').classList.add('spin');
-  document.getElementById('errBanner').classList.remove('on');
-
   try {
     const res = await fetch(APPS_URL);
-    const data = await res.json();
-    if (!Array.isArray(data) || data.length === 0) throw new Error('回傳資料為空');
-    ALL = data.filter(r => r.name && r.name !== '活動名稱');
-    if (ALL.length === 0) throw new Error('資料篩選後為空');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.json();
+    ALL = raw.filter(r => r['活動名稱'] && r['活動名稱'] !== '活動名稱' && r['活動名稱'] !== '尚未新增').map(r => ({
+      type:   r['貼文類型']    || '',
+      name:   r['活動名稱']    || '',
+      cat:    r['適用範圍']    || '',
+      wenyan: r['文白']        || '',
+      yun:    r['韻文/非韻文'] || '',
+      wenlei: r['文類']        || '',
+      wenti:  r['文體']        || '',
+      era:    r['時代']        || '',
+      author: r['作者/篇名']   || '',
+      lesson: r['作者/篇名']   || '',
+      time:   r['操作時間']    || '',
+      tags:   r['標籤']        || '',
+      desc:   r['說明']        || '',
+      url:    r['IG連結']      || '',
+    }));
+    LC = {};
+    ALL.forEach(r => {
+      if (r.author && r.author !== '不分') LC[r.author] = (LC[r.author] || 0) + 1;
+    });
+    document.getElementById('hCount').textContent = ALL.length;
+    document.getElementById('errBanner').classList.remove('on');
   } catch(e) {
+    document.getElementById('errMsg').textContent = '讀取試算表失敗，請稍後重新載入。（' + e.message + '）';
     document.getElementById('errBanner').classList.add('on');
-    document.getElementById('errMsg').textContent = `無法讀取試算表（${e.message}），顯示內建資料`;
-    ALL = FALLBACK;
-  } finally {
-    document.getElementById('lb').classList.remove('on');
-    document.getElementById('refBtn').classList.remove('spin');
   }
+  document.getElementById('lb').classList.remove('on');
+  document.getElementById('refBtn').classList.remove('spin');
   init();
 }
 
-function init() {
-  LC = {};
-  ALL.forEach(r => { if(r.lesson) LC[r.lesson] = (LC[r.lesson]||0)+1; });
-  buildFilters();
-  render();
-  document.getElementById('hCount').textContent = ALL.length;
+function init() { buildFilters(); render(); }
+
+function buildFilters() {
+  const uniq = (key, skip) => [...new Set(ALL.map(r => r[key]).filter(v => v && !skip?.includes(v)))].sort();
+
+  const types   = uniq('type');
+  const cats    = ['各課都可以用','各課選文','創作','選修課'];
+  const wenyans = uniq('wenyan', ['不分']);
+  const yuns    = uniq('yun',    ['不分']);
+  const wenleis = uniq('wenlei', ['不分']);
+  const times   = ['半節課以內','一節課以內','一節課以上','備課資料','活動設計','出題'];
+  const TAGS    = ['引起動機','遊戲競賽','桌遊團康','角色扮演','密室逃脫','數位媒材','素養應用','多元評量','溝通表達','閱讀策略','跨域議題','情意教學','反思探究'];
+
+  mk('typeC',   types,   v => { selType   = selType===v?null:v;   render(); });
+  mk('catC',    cats,    v => { selCat    = selCat===v?null:v;    render(); });
+  mk('wenyanC', wenyans, v => { selWenyan = selWenyan===v?null:v; render(); });
+  mk('yunC',    yuns,    v => { selYun    = selYun===v?null:v;    render(); });
+  mk('wenleiC', wenleis, v => {
+    selWenlei = selWenlei===v ? null : v;
+    selWenti  = null;
+    buildWenti();
+    render();
+  });
+  mk('timeC',   times,   v => { selTime   = selTime===v?null:v;   render(); });
+
+  const te = document.getElementById('tagC'); te.innerHTML = '';
+  TAGS.forEach(t => {
+    const c = ch(t, () => { selTags.has(t) ? selTags.delete(t) : selTags.add(t); render(); });
+    c.dataset.tag = t; te.appendChild(c);
+  });
+
+  setupLesson();
+  setupEra();
 }
 
-let fb = false;
-function buildFilters() {
-  if(fb) return; fb = true;
-  const CATS = ['各課都可以用','各課選文','選修課','創作'];
-  const TIMES = ['半節課以內','一節課以內','一節課以上','備課資料','活動設計','出題'];
-  const TAGS = ['引起動機','遊戲競賽','桌遊團康','角色扮演','密室逃脫','數位媒材','素養應用','多元評量','溝通表達','閱讀策略','跨域議題','情意教學','反思探究'];
-  mk('catC', CATS, v => { selCat = selCat===v?null:v; render(); }, v => v===selCat);
-  mk('timeC', TIMES, v => { selTime = selTime===v?null:v; render(); }, v => v===selTime);
-  const te = document.getElementById('tagC'); te.innerHTML='';
-  TAGS.forEach(t => {
-    const c = ch(t, () => { selTags.has(t)?selTags.delete(t):selTags.add(t); render(); });
-    c.dataset.tag=t; te.appendChild(c);
+function buildWenti() {
+  const wrap = document.getElementById('wentiWrap');
+  const el   = document.getElementById('wentiC');
+  if (!selWenlei) { wrap.style.display = 'none'; return; }
+  const opts = WENLEI_WENTI[selWenlei] ||
+    [...new Set(ALL.filter(r => r.wenlei === selWenlei).map(r => r.wenti).filter(v => v && v !== '不分'))].sort();
+  if (!opts.length) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  el.innerHTML = '';
+  opts.forEach(v => {
+    const c = ch(v, () => { selWenti = selWenti===v?null:v; render(); });
+    c.dataset.v = v; el.appendChild(c);
   });
 }
-function mk(id, vals, onClick, isOn) {
-  const el = document.getElementById(id); el.innerHTML='';
-  vals.forEach(v => { const c=ch(v,()=>onClick(v)); c.dataset.v=v; el.appendChild(c); });
+
+function mk(id, vals, onClick) {
+  const el = document.getElementById(id); if (!el) return;
+  el.innerHTML = '';
+  vals.forEach(v => { const c = ch(v, () => onClick(v)); c.dataset.v = v; el.appendChild(c); });
 }
 function ch(label, onClick) {
-  const c=document.createElement('button'); c.className='chip'; c.textContent=label;
-  c.addEventListener('click',onClick); return c;
+  const c = document.createElement('button');
+  c.className = 'chip'; c.textContent = label;
+  c.addEventListener('click', onClick); return c;
 }
 
-const li = document.getElementById('li'), ld = document.getElementById('ld');
-function updLD() {
-  const q=li.value.trim().toLowerCase();
-  const ls=Object.keys(LC).sort();
-  const m=q?ls.filter(l=>l.toLowerCase().includes(q)&&!selL.has(l)):ls.filter(l=>!selL.has(l));
-  if(!m.length){ld.classList.remove('open');return;}
-  ld.innerHTML=m.slice(0,40).map(l=>`<div class="lopt" data-l="${l}"><span>${l}</span><span class="cnt">${LC[l]} 篇</span></div>`).join('');
-  ld.classList.add('open');
-  ld.querySelectorAll('.lopt').forEach(el=>el.addEventListener('mousedown',e=>{e.preventDefault();addL(el.dataset.l)}));
+// 課名下拉
+function setupLesson() {
+  const li = document.getElementById('li'), ld = document.getElementById('ld');
+  function updLD() {
+    const q = li.value.trim().toLowerCase();
+    const ls = Object.keys(LC).sort();
+    const m = q ? ls.filter(l => l.toLowerCase().includes(q) && !selL.has(l))
+                : ls.filter(l => !selL.has(l));
+    if (!m.length) { ld.classList.remove('open'); return; }
+    ld.innerHTML = m.slice(0, 40).map(l =>
+      `<div class="lopt" data-l="${l}"><span>${l}</span><span class="cnt">${LC[l]}</span></div>`
+    ).join('');
+    ld.classList.add('open');
+    ld.querySelectorAll('.lopt').forEach(el => el.addEventListener('mousedown', e => { e.preventDefault(); addL(el.dataset.l); }));
+  }
+  li.addEventListener('input', updLD);
+  li.addEventListener('focus', updLD);
+  li.addEventListener('blur', () => setTimeout(() => ld.classList.remove('open'), 150));
 }
-function addL(l){selL.add(l);li.value='';ld.classList.remove('open');renderL();render();}
-window.rmL=l=>{selL.delete(l);renderL();render();};
-function renderL(){document.getElementById('ls').innerHTML=[...selL].map(l=>`<span class="ltag">${l}<button onclick="rmL('${l}')">✕</button></span>`).join('');}
-li.addEventListener('input',updLD);li.addEventListener('focus',updLD);
-li.addEventListener('blur',()=>setTimeout(()=>ld.classList.remove('open'),150));
+function addL(l) { selL.add(l); document.getElementById('li').value = ''; document.getElementById('ld').classList.remove('open'); renderL(); render(); }
+window.rmL = l => { selL.delete(l); renderL(); render(); };
+function renderL() {
+  document.getElementById('ls').innerHTML = [...selL].map(l =>
+    `<span class="ltag">${l}<button onclick="rmL('${l}')">✕</button></span>`
+  ).join('');
+}
 
-document.getElementById('q').addEventListener('input',e=>{qText=e.target.value.trim();render();});
-document.getElementById('resetBtn').onclick=()=>{
-  qText='';selCat=null;selTime=null;selTags.clear();selL.clear();
-  document.getElementById('q').value='';li.value='';ld.classList.remove('open');renderL();render();
+// 時代下拉
+function setupEra() {
+  const ei = document.getElementById('ei'), ed = document.getElementById('ed');
+  let eras = [];
+  function getEras() {
+    if (!eras.length) eras = [...new Set(ALL.map(r => r.era).filter(v => v && v !== '不分' && v !== '國學常識'))].sort();
+    return eras;
+  }
+  function updED() {
+    const q = ei.value.trim().toLowerCase();
+    const all = getEras();
+    const m = q ? all.filter(e => e.toLowerCase().includes(q) && e !== selEra)
+                : all.filter(e => e !== selEra);
+    if (!m.length) { ed.classList.remove('open'); return; }
+    ed.innerHTML = m.slice(0, 30).map(e => `<div class="eopt" data-e="${e}">${e}</div>`).join('');
+    ed.classList.add('open');
+    ed.querySelectorAll('.eopt').forEach(el => el.addEventListener('mousedown', ev => {
+      ev.preventDefault(); selEra = el.dataset.e; ei.value = ''; ed.classList.remove('open'); renderEra(); render();
+    }));
+  }
+  ei.addEventListener('input', updED);
+  ei.addEventListener('focus', updED);
+  ei.addEventListener('blur', () => setTimeout(() => ed.classList.remove('open'), 150));
+}
+function renderEra() {
+  document.getElementById('es').innerHTML = selEra
+    ? `<span class="etag">${selEra}<button onclick="clearEra()">✕</button></span>` : '';
+}
+window.clearEra = () => { selEra = null; renderEra(); render(); };
+
+// 重設
+document.getElementById('q').addEventListener('input', e => { qText = e.target.value.trim(); render(); });
+document.getElementById('resetBtn').onclick = () => {
+  qText=''; selType=null; selCat=null; selWenyan=null; selYun=null;
+  selWenlei=null; selWenti=null; selEra=null; selTime=null;
+  selTags.clear(); selL.clear();
+  document.getElementById('q').value = '';
+  document.getElementById('li').value = '';
+  document.getElementById('ei').value = '';
+  document.getElementById('ld').classList.remove('open');
+  document.getElementById('ed').classList.remove('open');
+  document.getElementById('wentiWrap').style.display = 'none';
+  renderL(); renderEra(); render();
 };
 
-function tc(t){return['教學活動','主題式備課法','備課','論文輕閱讀','寫作教學','板書分享'].includes(t)?t:'other';}
+const KNOWN_TYPES = ['教學活動','主題式備課法','主題式備課','備課','論文輕閱讀','寫作教學','板書分享'];
+function tc(t) { return KNOWN_TYPES.includes(t) ? t : 'other'; }
 
-function render(){
-  document.querySelectorAll('#catC .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===selCat));
-  document.querySelectorAll('#timeC .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===selTime));
-  document.querySelectorAll('#tagC .chip').forEach(c=>c.classList.toggle('on',selTags.has(c.dataset.tag)));
-  const q=qText.toLowerCase();
-  const f=ALL.filter(r=>{
-    if(selCat&&r.category!==selCat)return false;
-    if(selTime&&r.time!==selTime)return false;
-    if(selL.size>0&&!selL.has(r.lesson))return false;
-    if(selTags.size>0){const rt=(r.tags||'').split('、').map(x=>x.trim());if(![...selTags].every(t=>rt.includes(t)))return false;}
-    if(q){const h=((r.name||'')+(r.lesson||'')+(r.author||'')+(r.tags||'')+(r.category||'')+(r.type||'')).toLowerCase();if(!h.includes(q))return false;}
+function render() {
+  document.querySelectorAll('#typeC   .chip').forEach(c => c.classList.toggle('on', c.dataset.v === selType));
+  document.querySelectorAll('#catC    .chip').forEach(c => c.classList.toggle('on', c.dataset.v === selCat));
+  document.querySelectorAll('#wenyanC .chip').forEach(c => c.classList.toggle('on', c.dataset.v === selWenyan));
+  document.querySelectorAll('#yunC    .chip').forEach(c => c.classList.toggle('on', c.dataset.v === selYun));
+  document.querySelectorAll('#wenleiC .chip').forEach(c => c.classList.toggle('on', c.dataset.v === selWenlei));
+  document.querySelectorAll('#wentiC  .chip').forEach(c => c.classList.toggle('on', c.dataset.v === selWenti));
+  document.querySelectorAll('#timeC   .chip').forEach(c => c.classList.toggle('on', c.dataset.v === selTime));
+  document.querySelectorAll('#tagC    .chip').forEach(c => c.classList.toggle('on', selTags.has(c.dataset.tag)));
+
+  const q = qText.toLowerCase();
+  const f = ALL.filter(r => {
+    if (selType   && r.type   !== selType)   return false;
+    if (selCat    && r.cat    !== selCat)    return false;
+    if (selWenyan && r.wenyan !== selWenyan) return false;
+    if (selYun    && r.yun    !== selYun)    return false;
+    if (selWenlei && r.wenlei !== selWenlei) return false;
+    if (selWenti  && r.wenti  !== selWenti)  return false;
+    if (selEra    && r.era    !== selEra)    return false;
+    if (selTime   && r.time   !== selTime)   return false;
+    if (selL.size > 0 && !selL.has(r.lesson)) return false;
+    if (selTags.size > 0) {
+      const rt = r.tags.split('、').map(x => x.trim());
+      if (![...selTags].every(t => rt.includes(t))) return false;
+    }
+    if (q) {
+      const h = (r.name+r.author+r.tags+r.cat+r.type+r.desc+r.wenlei+r.wenti+r.era+r.wenyan).toLowerCase();
+      if (!h.includes(q)) return false;
+    }
     return true;
   });
-  document.getElementById('showN').textContent=f.length;
-  const grid=document.getElementById('grid');grid.innerHTML='';
-  if(!f.length){grid.innerHTML='<div class="empty"><div class="ei">🔎</div><p>找不到符合條件的貼文<br>試試調整篩選條件</p></div>';return;}
-  f.forEach((r,i)=>{
-    const t=tc(r.type);
-    const tags=r.tags?r.tags.split('、').map(x=>x.trim()).filter(Boolean):[];
-    const sub=[r.author,r.lesson].filter(Boolean).join(' · ');
-    const card=document.createElement('div');
-    card.className='card';card.dataset.t=t;card.style.animationDelay=Math.min(i*.025,.35)+'s';
-    card.innerHTML=`
-      <div class="ctop"><span class="badge bt-${t}">${r.type||'其他'}</span><span class="cname">${r.name}</span></div>
-      ${sub?`<div class="clesson">📖 ${sub}</div>`:''}
-      ${tags.length?`<div class="ctags">${tags.map(tag=>`<span class="tag ${selTags.has(tag)?'hi':''}">${tag}</span>`).join('')}</div>`:''}
+
+  document.getElementById('showN').textContent = f.length;
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  if (!f.length) {
+    grid.innerHTML = '<div class="empty"><div class="ei">🔎</div><p>找不到符合條件的貼文<br>試試調整篩選條件</p></div>';
+    return;
+  }
+
+  f.forEach((r, i) => {
+    const t = tc(r.type);
+    const tags = r.tags ? r.tags.split('、').map(x => x.trim()).filter(Boolean) : [];
+    const skipVals = ['不分','尚未新增',''];
+    const meta = [r.era, r.author].filter(v => !skipVals.includes(v)).join(' · ');
+    const tclass = t.replace(/\s/g,'');
+    const card = document.createElement('div');
+    card.className = 'card'; card.dataset.t = t;
+    card.style.animationDelay = Math.min(i * .022, .35) + 's';
+    card.innerHTML = `
+      <div class="ctop">
+        <span class="badge bt-${tclass}">${r.type||'其他'}</span>
+        <span class="cname">${r.name}</span>
+      </div>
+      ${meta ? `<div class="clesson">📖 ${meta}</div>` : ''}
+      ${r.desc ? `<div class="cdesc">${r.desc}</div>` : ''}
+      ${tags.length ? `<div class="ctags">${tags.map(tag=>`<span class="tag ${selTags.has(tag)?'hi':''}">${tag}</span>`).join('')}</div>` : ''}
       <div class="cfoot">
-        ${r.time?`<span class="ctime">⏱ ${r.time}</span>`:'<span></span>'}
-        ${r.url?`<a class="iglink" href="${r.url}" target="_blank" rel="noopener">前往 IG 貼文 →</a>`:`<span class="iglink na">尚未發布</span>`}
+        ${r.time ? `<span class="ctime">⏱ ${r.time}</span>` : '<span></span>'}
+        ${r.url  ? `<a class="iglink" href="${r.url}" target="_blank" rel="noopener">前往 IG 貼文 →</a>`
+                 : `<span class="iglink na">尚未發布</span>`}
       </div>`;
     grid.appendChild(card);
   });
