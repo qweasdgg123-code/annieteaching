@@ -222,6 +222,9 @@ async function loadData() {
     const res = await fetch(APPS_URL);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const raw = await res.json();
+    // DEBUG: 印出第一筆的所有key
+    if (raw.length > 0) console.log('API回傳欄位:', Object.keys(raw[0]));
+    console.log('第一筆課名欄位:', raw[0]['課名'], '| 作者/篇名:', raw[0]['作者/篇名'], '| 作者:', raw[0]['作者']);
     ALL = raw.filter(r => r['活動名稱'] && r['活動名稱'] !== '活動名稱' && r['活動名稱'] !== '尚未新增').map(r => ({
       type:   r['貼文類型']    || '',
       name:   r['活動名稱']    || '',
@@ -231,7 +234,7 @@ async function loadData() {
       wenlei: r['文類']        || '',
       wenti:  r['文體']        || '',
       era:    r['時代/國家'] || r['時代'] || '',
-      author: r['作者'] || r['作者/篇名'] || '',
+      author: r['作者/篇名'] || '',
       lesson: r['課名'] || '',
       time:   r['操作時間']    || '',
       tags:   r['標籤']        || '',
