@@ -446,7 +446,7 @@ function render() {
     const skipVals = ['不分','尚未新增',''];
     const meta = [r.era, r.author].filter(v => !skipVals.includes(v)).join(' · ');
     const lessonMeta = r.lesson && !skipVals.includes(r.lesson) ? r.lesson : '';
-    const tclass = r.type.replace(/\s/g,'').replace(/\/g,'');
+    const tclass = r.type.replace(/[\s/]/g,'');
     const card = document.createElement('div');
     card.className = 'card'; card.dataset.t = r.type;
     card.style.animationDelay = Math.min(i * .022, .35) + 's';
