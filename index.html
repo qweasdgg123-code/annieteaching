@@ -14,4 +14,261 @@
   --green: #3d6b4f; --blue: #2c5282; --gold: #9a6e1a; --tag-bg: #eee8da;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Noto Serif TC",serif;background:var(--pa
+body{font-family:"Noto Serif TC",serif;background:var(--paper);color:var(--ink);min-height:100vh}
+header{background:var(--ink);position:relative;overflow:hidden}
+.stripe{height:5px;background:repeating-linear-gradient(90deg,var(--red) 0,var(--red) 40px,var(--gold) 40px,var(--gold) 80px,var(--green) 80px,var(--green) 120px,var(--blue) 120px,var(--blue) 160px)}
+.hbody{padding:32px 48px 28px;display:flex;align-items:center;gap:20px;max-width:1160px;margin:0 auto}
+.hlogo{font-size:2.4rem;line-height:1}
+.hinfo h1{font-size:1.55rem;font-weight:900;color:#fff;letter-spacing:.1em;line-height:1.2}
+.hinfo .sub{font-size:.75rem;color:rgba(255,255,255,.45);margin-top:5px;font-family:"DM Mono",monospace;letter-spacing:.06em}
+.hstat{margin-left:auto;text-align:right}
+.hstat .n{font-size:2.6rem;font-weight:900;font-family:"DM Mono",monospace;color:var(--red);line-height:1}
+.hstat .l{font-size:.7rem;color:rgba(255,255,255,.4);letter-spacing:.1em;margin-top:2px}
+.loading-bar{height:3px;background:linear-gradient(90deg,var(--red),var(--gold),var(--green),var(--blue));background-size:200%;animation:slide 1.2s linear infinite;display:none}
+.loading-bar.on{display:block}
+@keyframes slide{from{background-position:100% 0}to{background-position:-100% 0}}
+.err{background:#fde8e4;border-left:4px solid var(--red);padding:12px 24px;font-size:.84rem;color:var(--red);display:none;align-items:center;gap:8px}
+.err.on{display:flex}
+.wrap{max-width:1160px;margin:0 auto;padding:36px 24px 80px;display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
+.sidebar{position:sticky;top:20px;display:flex;flex-direction:column;gap:12px}
+.sbox{position:relative}
+.sbox input{width:100%;padding:10px 12px 10px 34px;border:1.5px solid var(--sand);border-radius:8px;background:var(--cream);font-family:"Noto Serif TC",serif;font-size:.84rem;color:var(--ink);outline:none;transition:border-color .15s}
+.sbox input::placeholder{color:var(--muted)}
+.sbox input:focus{border-color:var(--blue)}
+.sbox .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}
+.ldrop{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--blue);border-radius:8px;max-height:220px;overflow-y:auto;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.12)}
+.ldrop.open{display:block}
+.lopt{padding:8px 14px;font-size:.82rem;cursor:pointer;transition:background .1s;color:var(--ink);display:flex;align-items:center;justify-content:space-between}
+.lopt:hover{background:var(--cream)}
+.lopt .cnt{font-size:.68rem;font-family:"DM Mono",monospace;color:var(--muted)}
+.lsel{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.ltag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:var(--blue);color:#fff;font-size:.74rem}
+.ltag button{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:12px;padding:0;line-height:1}
+.ltag button:hover{color:#fff}
+.panel{background:var(--cream);border:1.5px solid var(--sand);border-radius:10px;padding:16px}
+.ptitle{font-size:.66rem;letter-spacing:.14em;color:var(--muted);font-family:"DM Mono",monospace;font-weight:500;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--sand)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{padding:4px 10px;border-radius:999px;border:1.5px solid var(--sand);background:var(--paper);font-size:.76rem;font-family:"Noto Serif TC",serif;color:var(--muted);cursor:pointer;transition:all .13s;user-select:none;line-height:1.5}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.rbtn{width:100%;padding:9px 12px;background:transparent;border:1.5px solid var(--sand);border-radius:8px;font-size:.78rem;font-family:"Noto Serif TC",serif;color:var(--muted);cursor:pointer;transition:all .13s}
+.rbtn:hover{border-color:var(--red);color:var(--red)}
+.rbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--sand)}
+.rcount{font-size:.78rem;font-family:"DM Mono",monospace;color:var(--muted)}
+.rcount strong{color:var(--red);font-size:1rem}
+.refbtn{padding:5px 12px;border:1.5px solid var(--sand);border-radius:6px;background:transparent;font-size:.72rem;font-family:"DM Mono",monospace;color:var(--muted);cursor:pointer;transition:all .13s;display:flex;align-items:center;gap:5px}
+.refbtn:hover{border-color:var(--green);color:var(--green)}
+.refbtn.spin .ri{display:inline-block;animation:spin .8s linear infinite}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px}
+.card{background:#fff;border:1.5px solid var(--sand);border-radius:10px;padding:16px 16px 13px;display:flex;flex-direction:column;gap:9px;transition:transform .14s,box-shadow .14s,border-color .14s;animation:pop .2s ease both;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.card[data-t="教學活動"]::before{background:var(--red)}
+.card[data-t="主題式備課法"]::before{background:var(--blue)}
+.card[data-t="備課"]::before{background:var(--gold)}
+.card[data-t="論文輕閱讀"]::before{background:var(--green)}
+.card[data-t="寫作教學"]::before{background:#8b5cf6}
+.card[data-t="板書分享"]::before{background:#0891b2}
+.card[data-t="other"]::before{background:var(--sand)}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.09);border-color:#aaa}
+@keyframes pop{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ctop{display:flex;align-items:flex-start;gap:7px}
+.badge{display:inline-block;font-size:.63rem;padding:2px 7px;border-radius:3px;font-family:"DM Mono",monospace;font-weight:500;white-space:nowrap;flex-shrink:0;margin-top:2px;letter-spacing:.03em}
+.bt-教學活動{background:#fde8e4;color:var(--red)}
+.bt-主題式備課法{background:#dbeafe;color:var(--blue)}
+.bt-備課{background:#fef3c7;color:var(--gold)}
+.bt-論文輕閱讀{background:#dcfce7;color:var(--green)}
+.bt-寫作教學{background:#ede9fe;color:#6d28d9}
+.bt-板書分享{background:#cffafe;color:#0e7490}
+.bt-other{background:var(--tag-bg);color:var(--muted)}
+.cname{font-size:.92rem;font-weight:600;line-height:1.5;color:var(--ink)}
+.clesson{font-size:.74rem;color:var(--muted);line-height:1.4;font-style:italic}
+.ctags{display:flex;flex-wrap:wrap;gap:4px;margin-top:1px}
+.tag{font-size:.65rem;padding:1px 7px;border-radius:999px;background:var(--tag-bg);color:var(--muted);border:1px solid var(--sand);font-family:"DM Mono",monospace}
+.tag.hi{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cfoot{margin-top:auto;padding-top:9px;border-top:1px solid var(--sand);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ctime{font-size:.65rem;font-family:"DM Mono",monospace;color:var(--muted);white-space:nowrap}
+.iglink{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-family:"DM Mono",monospace;color:var(--red);text-decoration:none;font-weight:500;transition:gap .12s;white-space:nowrap}
+.iglink:hover{gap:8px;opacity:.8}
+.iglink.na{color:var(--sand);pointer-events:none}
+.empty{grid-column:1/-1;padding:70px 20px;text-align:center;color:var(--muted)}
+.empty .ei{font-size:2.5rem;margin-bottom:10px}
+.empty p{font-size:.9rem;line-height:1.8}
+@media(max-width:700px){
+  .wrap{grid-template-columns:1fr;gap:20px}
+  .sidebar{position:static}
+  .hbody{padding:20px}
+  .hstat{display:none}
+  .wrap{padding:20px 16px 60px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="stripe"></div>
+  <div class="loading-bar" id="lb"></div>
+  <div class="hbody">
+    <div class="hlogo">📚</div>
+    <div class="hinfo">
+      <h1>安心的教學點子</h1>
+      <div class="sub">IG 貼文檢索 · @annieteaching</div>
+    </div>
+    <div class="hstat">
+      <div class="n" id="hCount">—</div>
+      <div class="l">篇貼文</div>
+    </div>
+  </div>
+</header>
+<div class="err" id="errBanner">⚠️ <span id="errMsg"></span></div>
+<div class="wrap">
+  <aside class="sidebar">
+    <div class="sbox">
+      <span class="si">🔍</span>
+      <input type="text" id="q" placeholder="搜尋活動名稱、關鍵字⋯">
+    </div>
+    <div class="panel">
+      <div class="ptitle">各課選文</div>
+      <div style="position:relative">
+        <div class="sbox">
+          <span class="si">📖</span>
+          <input type="text" id="li" placeholder="輸入課名，例：孔乙己" autocomplete="off">
+        </div>
+        <div class="ldrop" id="ld"></div>
+      </div>
+      <div class="lsel" id="ls"></div>
+    </div>
+    <div class="panel"><div class="ptitle">大類別</div><div class="chips" id="catC"></div></div>
+    <div class="panel"><div class="ptitle">操作時間</div><div class="chips" id="timeC"></div></div>
+    <div class="panel"><div class="ptitle">活動標籤（可多選）</div><div class="chips" id="tagC"></div></div>
+    <button class="rbtn" id="resetBtn">↺ 清除所有篩選</button>
+  </aside>
+  <main>
+    <div class="rbar">
+      <div class="rcount">顯示 <strong id="showN">—</strong> 筆</div>
+      <button class="refbtn" id="refBtn" onclick="loadData()"><span class="ri">↻</span> 重新載入</button>
+    </div>
+    <div class="grid" id="grid">
+      <div class="empty"><div class="ei">⏳</div><p>載入中⋯</p></div>
+    </div>
+  </main>
+</div>
+<script>
+const APPS_URL = 'https://script.google.com/macros/s/AKfycbzMAjZMInaNWuKJhOkB57e9hJTtLxatxmNYzEx_GVhiTzlhSi7XHnmjKrOkj-k0sIvdLA/exec';
+
+let ALL = [], LC = {}, selL = new Set(), selCat = null, selTime = null, selTags = new Set(), qText = '';
+
+async function loadData() {
+  document.getElementById('lb').classList.add('on');
+  document.getElementById('refBtn').classList.add('spin');
+  document.getElementById('errBanner').classList.remove('on');
+
+  try {
+    const res = await fetch(APPS_URL);
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error('回傳資料為空');
+    ALL = data.filter(r => r.name && r.name !== '活動名稱');
+    if (ALL.length === 0) throw new Error('資料篩選後為空');
+  } catch(e) {
+    document.getElementById('errBanner').classList.add('on');
+    document.getElementById('errMsg').textContent = `無法讀取試算表（${e.message}），顯示內建資料`;
+    ALL = FALLBACK;
+  } finally {
+    document.getElementById('lb').classList.remove('on');
+    document.getElementById('refBtn').classList.remove('spin');
+  }
+  init();
+}
+
+function init() {
+  LC = {};
+  ALL.forEach(r => { if(r.lesson) LC[r.lesson] = (LC[r.lesson]||0)+1; });
+  buildFilters();
+  render();
+  document.getElementById('hCount').textContent = ALL.length;
+}
+
+let fb = false;
+function buildFilters() {
+  if(fb) return; fb = true;
+  const CATS = ['各課都可以用','各課選文','選修課','創作'];
+  const TIMES = ['半節課以內','一節課以內','一節課以上','備課資料','活動設計','出題'];
+  const TAGS = ['引起動機','遊戲競賽','桌遊團康','角色扮演','密室逃脫','數位媒材','素養應用','多元評量','溝通表達','閱讀策略','跨域議題','情意教學','反思探究'];
+  mk('catC', CATS, v => { selCat = selCat===v?null:v; render(); }, v => v===selCat);
+  mk('timeC', TIMES, v => { selTime = selTime===v?null:v; render(); }, v => v===selTime);
+  const te = document.getElementById('tagC'); te.innerHTML='';
+  TAGS.forEach(t => {
+    const c = ch(t, () => { selTags.has(t)?selTags.delete(t):selTags.add(t); render(); });
+    c.dataset.tag=t; te.appendChild(c);
+  });
+}
+function mk(id, vals, onClick, isOn) {
+  const el = document.getElementById(id); el.innerHTML='';
+  vals.forEach(v => { const c=ch(v,()=>onClick(v)); c.dataset.v=v; el.appendChild(c); });
+}
+function ch(label, onClick) {
+  const c=document.createElement('button'); c.className='chip'; c.textContent=label;
+  c.addEventListener('click',onClick); return c;
+}
+
+const li = document.getElementById('li'), ld = document.getElementById('ld');
+function updLD() {
+  const q=li.value.trim().toLowerCase();
+  const ls=Object.keys(LC).sort();
+  const m=q?ls.filter(l=>l.toLowerCase().includes(q)&&!selL.has(l)):ls.filter(l=>!selL.has(l));
+  if(!m.length){ld.classList.remove('open');return;}
+  ld.innerHTML=m.slice(0,40).map(l=>`<div class="lopt" data-l="${l}"><span>${l}</span><span class="cnt">${LC[l]} 篇</span></div>`).join('');
+  ld.classList.add('open');
+  ld.querySelectorAll('.lopt').forEach(el=>el.addEventListener('mousedown',e=>{e.preventDefault();addL(el.dataset.l)}));
+}
+function addL(l){selL.add(l);li.value='';ld.classList.remove('open');renderL();render();}
+window.rmL=l=>{selL.delete(l);renderL();render();};
+function renderL(){document.getElementById('ls').innerHTML=[...selL].map(l=>`<span class="ltag">${l}<button onclick="rmL('${l}')">✕</button></span>`).join('');}
+li.addEventListener('input',updLD);li.addEventListener('focus',updLD);
+li.addEventListener('blur',()=>setTimeout(()=>ld.classList.remove('open'),150));
+
+document.getElementById('q').addEventListener('input',e=>{qText=e.target.value.trim();render();});
+document.getElementById('resetBtn').onclick=()=>{
+  qText='';selCat=null;selTime=null;selTags.clear();selL.clear();
+  document.getElementById('q').value='';li.value='';ld.classList.remove('open');renderL();render();
+};
+
+function tc(t){return['教學活動','主題式備課法','備課','論文輕閱讀','寫作教學','板書分享'].includes(t)?t:'other';}
+
+function render(){
+  document.querySelectorAll('#catC .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===selCat));
+  document.querySelectorAll('#timeC .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===selTime));
+  document.querySelectorAll('#tagC .chip').forEach(c=>c.classList.toggle('on',selTags.has(c.dataset.tag)));
+  const q=qText.toLowerCase();
+  const f=ALL.filter(r=>{
+    if(selCat&&r.category!==selCat)return false;
+    if(selTime&&r.time!==selTime)return false;
+    if(selL.size>0&&!selL.has(r.lesson))return false;
+    if(selTags.size>0){const rt=(r.tags||'').split('、').map(x=>x.trim());if(![...selTags].every(t=>rt.includes(t)))return false;}
+    if(q){const h=((r.name||'')+(r.lesson||'')+(r.author||'')+(r.tags||'')+(r.category||'')+(r.type||'')).toLowerCase();if(!h.includes(q))return false;}
+    return true;
+  });
+  document.getElementById('showN').textContent=f.length;
+  const grid=document.getElementById('grid');grid.innerHTML='';
+  if(!f.length){grid.innerHTML='<div class="empty"><div class="ei">🔎</div><p>找不到符合條件的貼文<br>試試調整篩選條件</p></div>';return;}
+  f.forEach((r,i)=>{
+    const t=tc(r.type);
+    const tags=r.tags?r.tags.split('、').map(x=>x.trim()).filter(Boolean):[];
+    const sub=[r.author,r.lesson].filter(Boolean).join(' · ');
+    const card=document.createElement('div');
+    card.className='card';card.dataset.t=t;card.style.animationDelay=Math.min(i*.025,.35)+'s';
+    card.innerHTML=`
+      <div class="ctop"><span class="badge bt-${t}">${r.type||'其他'}</span><span class="cname">${r.name}</span></div>
+      ${sub?`<div class="clesson">📖 ${sub}</div>`:''}
+      ${tags.length?`<div class="ctags">${tags.map(tag=>`<span class="tag ${selTags.has(tag)?'hi':''}">${tag}</span>`).join('')}</div>`:''}
+      <div class="cfoot">
+        ${r.time?`<span class="ctime">⏱ ${r.time}</span>`:'<span></span>'}
+        ${r.url?`<a class="iglink" href="${r.url}" target="_blank" rel="noopener">前往 IG 貼文 →</a>`:`<span class="iglink na">尚未發布</span>`}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+loadData();
+</script>
+</body>
+</html>
