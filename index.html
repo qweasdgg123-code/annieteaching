@@ -293,7 +293,7 @@ header { background: var(--ink); position: relative; overflow: hidden; }
 
 <div class="config-notice show" id="configNotice">
   📋 <div>
-    請將下方的 <code>YOUR_SHEET_ID</code> 替換成你的 Google 試算表 ID，網頁才能自動讀取資料。<br>
+    請將下方的 <code>1H6cf3H2Ofi8Tn8HhN6ovabyAD-fKwfPO0sXkH57mxXE</code> 替換成你的 Google 試算表 ID，網頁才能自動讀取資料。<br>
     <small style="color:#a05a0a; margin-top:4px; display:block;">試算表 ID 是網址中 /d/ 和 /edit 之間的那串字</small>
   </div>
 </div>
@@ -355,7 +355,7 @@ header { background: var(--ink); position: relative; overflow: hidden; }
 // ═══════════════════════════════════════════════
 // ★ 請把下方 YOUR_SHEET_ID 換成你的試算表 ID
 //   試算表網址：https://docs.google.com/spreadsheets/d/【這裡】/edit
-const SHEET_ID = 'YOUR_SHEET_ID';
+const SHEET_ID = '1H6cf3H2Ofi8Tn8HhN6ovabyAD-fKwfPO0sXkH57mxXE';
 // ★ 工作表名稱（預設是 "工作表1"，若有改名請一起改）
 const SHEET_NAME = '工作表1';
 // ═══════════════════════════════════════════════
@@ -373,13 +373,13 @@ let qText = '';
 
 // ── Load from Google Sheets (CSV export)
 async function loadData() {
-  if (SHEET_ID === 'YOUR_SHEET_ID') {
+  if (SHEET_ID === '1H6cf3H2Ofi8Tn8HhN6ovabyAD-fKwfPO0sXkH57mxXE') {
     document.getElementById('configNotice').classList.add('show');
     document.getElementById('grid').innerHTML = `
       <div class="empty">
         <div class="e-icon">⚙️</div>
         <p>請先設定 Google 試算表 ID<br>
-        <small>打開這個 HTML 檔案，找到 <code style="background:#eee;padding:1px 5px;border-radius:3px">YOUR_SHEET_ID</code> 並替換成你的試算表 ID</small></p>
+        <small>打開這個 HTML 檔案，找到 <code style="background:#eee;padding:1px 5px;border-radius:3px">1H6cf3H2Ofi8Tn8HhN6ovabyAD-fKwfPO0sXkH57mxXE</code> 並替換成你的試算表 ID</small></p>
       </div>`;
     return;
   }
