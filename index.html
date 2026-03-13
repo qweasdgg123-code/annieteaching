@@ -179,7 +179,10 @@ async function loadData() {
     const res = await fetch(url);
     const text = await res.text();
     // Google 回傳的 JSON 有前綴要去掉
-    const json = JSON.parse(text.replace(/^.*?\(/, '').replace(/\);?$/, ''));
+    // Google gviz response: extract JSON object
+    const match = text.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('無法解析試算表回應');
+    const json = JSON.parse(match[0]);
     const rows = json.table.rows;
     ALL = rows.map(row => {
       const c = row.c;
