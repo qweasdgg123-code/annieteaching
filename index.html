@@ -218,10 +218,13 @@ let ALL = [], LC = {};
 
 async function loadData() {
   document.getElementById('lb').classList.add('on');
+  console.log('開始載入資料...');
   try {
     const res = await fetch(APPS_URL);
+    console.log('fetch 成功，狀態:', res.status);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const raw = await res.json();
+    console.log('JSON 解析成功，總筆數:', raw.length);
     // DEBUG: 印出第一筆的所有key
     if (raw.length > 0) console.log('API回傳欄位:', Object.keys(raw[0]));
     console.log('第一筆課名欄位:', raw[0]['課名'], '| 作者/篇名:', raw[0]['作者/篇名'], '| 作者:', raw[0]['作者']);
@@ -249,6 +252,7 @@ async function loadData() {
     document.getElementById('hCount').textContent = ALL.length;
   } catch(e) {
     console.error('載入失敗:', e);
+    document.getElementById('grid').innerHTML = '<div class="empty"><div class="ei">⚠️</div><p>資料載入失敗<br><small>' + e.message + '</small></p></div>';
   }
   document.getElementById('lb').classList.remove('on');
   init();
