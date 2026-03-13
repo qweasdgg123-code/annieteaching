@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安心的教學點子｜貼文檢索</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #faf7f2;
+  --cream: #f2ece0;
+  --sand:  #dfd5c0;
+  --ink:   #1e1a14;
+  --muted: #7a6e5c;
+  --red:   #c0432a;
+  --green: #3d6b4f;
+  --blue:  #2c5282;
+  --gold:  #9a6e1a;
+  --tag-bg:#eee8da;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Serif TC", serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header { background: var(--ink); position: relative; overflow: hidden; }
+.header-stripe {
+  height: 5px;
+  background: repeating-linear-gradient(90deg,
+    var(--red) 0px,var(--red) 40px,
+    var(--gold) 40px,var(--gold) 80px,
+    var(--green) 80px,var(--green) 120px,
+    var(--blue) 120px,var(--blue) 160px);
+}
+.header-body {
+  padding: 32px 48px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+.header-logo { font-size: 2.4rem; line-height: 1; }
+.header-info h1 {
+  font-size: 1.55rem; font-weight: 900;
+  color: #fff; letter-spacing: 0.1em; line-height: 1.2;
+}
+.header-info .sub {
+  font-size: 0.75rem; color: rgba(255,255,255,0.45);
+  margin-top: 5px; font-family: "DM Mono", monospace; letter-spacing: 0.06em;
+}
+.header-stat { margin-left: auto; text-align: right; }
+.header-stat .n {
+  font-size: 2.6rem; font-weight: 900;
+  font-family: "DM Mono", monospace; color: var(--red); line-height: 1;
+}
+.header-stat .l { font-size: 0.7rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; margin-top: 2px; }
+
+/* loading */
+.loading-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--gold), var(--green), var(--blue));
+  background-size: 200% 100%;
+  animation: slide 1.2s linear infinite;
+  display: none;
+}
+.loading-bar.active { display: block; }
+@keyframes slide { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+
+/* error banner */
+.error-banner {
+  background: #fde8e4; border-left: 4px solid var(--red);
+  padding: 12px 20px; font-size: 0.84rem; color: var(--red);
+  display: none;
+}
+.error-banner.show { display: flex; align-items: center; gap: 10px; }
+.error-banner a { color: var(--red); font-weight: 600; }
+
+/* config notice */
+.config-notice {
+  background: #fef3c7; border-left: 4px solid var(--gold);
+  padding: 16px 24px; font-size: 0.85rem; color: #78400a;
+  display: none; align-items: flex-start; gap: 12px;
+  max-width: 1160px; margin: 16px auto; border-radius: 0 8px 8px 0;
+}
+.config-notice.show { display: flex; }
+.config-notice code {
+  background: rgba(0,0,0,0.06); padding: 1px 6px;
+  border-radius: 4px; font-family: "DM Mono", monospace; font-size: 0.82rem;
+}
+
+/* ── LAYOUT ── */
+.wrap {
+  max-width: 1160px; margin: 0 auto;
+  padding: 36px 24px 80px;
+  display: grid; grid-template-columns: 260px 1fr;
+  gap: 32px; align-items: start;
+}
+
+/* ── SIDEBAR ── */
+.sidebar { position: sticky; top: 20px; display: flex; flex-direction: column; gap: 12px; }
+.search-box { position: relative; }
+.search-box input {
+  width: 100%; padding: 10px 12px 10px 34px;
+  border: 1.5px solid var(--sand); border-radius: 8px;
+  background: var(--cream); font-family: "Noto Serif TC", serif;
+  font-size: 0.84rem; color: var(--ink); outline: none; transition: border-color 0.15s;
+}
+.search-box input::placeholder { color: var(--muted); }
+.search-box input:focus { border-color: var(--blue); }
+.search-box .s-icon {
+  position: absolute; left: 10px; top: 50%;
+  transform: translateY(-50%); font-size: 13px; color: var(--muted); pointer-events: none;
+}
+
+/* lesson autocomplete */
+.lesson-wrap { position: relative; }
+.lesson-dropdown {
+  display: none; position: absolute;
+  top: calc(100% + 4px); left: 0; right: 0;
+  background: #fff; border: 1.5px solid var(--blue);
+  border-radius: 8px; max-height: 220px; overflow-y: auto;
+  z-index: 100; box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+.lesson-dropdown.open { display: block; }
+.lesson-opt {
+  padding: 8px 14px; font-size: 0.82rem; cursor: pointer;
+  transition: background 0.1s; color: var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.lesson-opt:hover { background: var(--cream); }
+.lesson-opt .cnt { font-size: 0.68rem; font-family: "DM Mono", monospace; color: var(--muted); }
+.lesson-selected { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.lesson-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 999px;
+  background: var(--blue); color: #fff;
+  font-size: 0.74rem; font-family: "Noto Serif TC", serif;
+}
+.lesson-tag button {
+  background: none; border: none; color: rgba(255,255,255,0.7);
+  cursor: pointer; font-size: 12px; padding: 0; line-height: 1;
+}
+.lesson-tag button:hover { color: #fff; }
+
+/* panel */
+.panel { background: var(--cream); border: 1.5px solid var(--sand); border-radius: 10px; padding: 16px; }
+.panel-title {
+  font-size: 0.66rem; letter-spacing: 0.14em; color: var(--muted);
+  font-family: "DM Mono", monospace; font-weight: 500;
+  text-transform: uppercase; margin-bottom: 12px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--sand);
+}
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  padding: 4px 10px; border-radius: 999px;
+  border: 1.5px solid var(--sand); background: var(--paper);
+  font-size: 0.76rem; font-family: "Noto Serif TC", serif;
+  color: var(--muted); cursor: pointer; transition: all 0.13s;
+  user-select: none; line-height: 1.5;
+}
+.chip:hover { border-color: var(--ink); color: var(--ink); }
+.chip.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.reset-btn {
+  width: 100%; padding: 9px 12px; background: transparent;
+  border: 1.5px solid var(--sand); border-radius: 8px;
+  font-size: 0.78rem; font-family: "Noto Serif TC", serif;
+  color: var(--muted); cursor: pointer; transition: all 0.13s;
+}
+.reset-btn:hover { border-color: var(--red); color: var(--red); }
+
+/* ── MAIN ── */
+.result-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--sand);
+}
+.result-count { font-size: 0.78rem; font-family: "DM Mono", monospace; color: var(--muted); }
+.result-count strong { color: var(--red); font-size: 1rem; }
+.refresh-btn {
+  padding: 5px 12px; border: 1.5px solid var(--sand); border-radius: 6px;
+  background: transparent; font-size: 0.72rem; font-family: "DM Mono", monospace;
+  color: var(--muted); cursor: pointer; transition: all 0.13s; display: flex; align-items: center; gap: 5px;
+}
+.refresh-btn:hover { border-color: var(--green); color: var(--green); }
+.refresh-btn.spinning .r-icon { display: inline-block; animation: spin 0.8s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* ── CARDS ── */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 14px; }
+.card {
+  background: #fff; border: 1.5px solid var(--sand);
+  border-radius: 10px; padding: 16px 16px 13px;
+  display: flex; flex-direction: column; gap: 9px;
+  transition: transform 0.14s, box-shadow 0.14s, border-color 0.14s;
+  animation: pop 0.2s ease both; position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.card[data-t="教學活動"]::before   { background: var(--red); }
+.card[data-t="主題式備課法"]::before { background: var(--blue); }
+.card[data-t="備課"]::before       { background: var(--gold); }
+.card[data-t="論文輕閱讀"]::before  { background: var(--green); }
+.card[data-t="寫作教學"]::before   { background: #8b5cf6; }
+.card[data-t="板書分享"]::before   { background: #0891b2; }
+.card[data-t="other"]::before      { background: var(--sand); }
+.card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); border-color: #aaa; }
+@keyframes pop {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card-top { display: flex; align-items: flex-start; gap: 7px; }
+.badge {
+  display: inline-block; font-size: 0.63rem; padding: 2px 7px;
+  border-radius: 3px; font-family: "DM Mono", monospace; font-weight: 500;
+  white-space: nowrap; flex-shrink: 0; margin-top: 2px; letter-spacing: 0.03em;
+}
+.bt-教學活動   { background: #fde8e4; color: var(--red); }
+.bt-主題式備課法 { background: #dbeafe; color: var(--blue); }
+.bt-備課       { background: #fef3c7; color: var(--gold); }
+.bt-論文輕閱讀  { background: #dcfce7; color: var(--green); }
+.bt-寫作教學   { background: #ede9fe; color: #6d28d9; }
+.bt-板書分享   { background: #cffafe; color: #0e7490; }
+.bt-other      { background: var(--tag-bg); color: var(--muted); }
+.card-name { font-size: 0.92rem; font-weight: 600; line-height: 1.5; color: var(--ink); }
+.card-lesson { font-size: 0.74rem; color: var(--muted); line-height: 1.4; font-style: italic; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 1px; }
+.tag {
+  font-size: 0.65rem; padding: 1px 7px; border-radius: 999px;
+  background: var(--tag-bg); color: var(--muted);
+  border: 1px solid var(--sand); font-family: "DM Mono", monospace;
+}
+.tag.hi { background: var(--ink); color: #fff; border-color: var(--ink); }
+.card-footer {
+  margin-top: auto; padding-top: 9px; border-top: 1px solid var(--sand);
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.card-time { font-size: 0.65rem; font-family: "DM Mono", monospace; color: var(--muted); white-space: nowrap; }
+.ig-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.73rem; font-family: "DM Mono", monospace;
+  color: var(--red); text-decoration: none; font-weight: 500;
+  transition: gap 0.12s; white-space: nowrap;
+}
+.ig-link:hover { gap: 8px; opacity: 0.8; }
+.ig-link.na { color: var(--sand); pointer-events: none; }
+
+.empty {
+  grid-column: 1/-1; padding: 70px 20px;
+  text-align: center; color: var(--muted);
+}
+.empty .e-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.empty p { font-size: 0.9rem; line-height: 1.8; }
+
+@media (max-width: 700px) {
+  .wrap { grid-template-columns: 1fr; gap: 20px; }
+  .sidebar { position: static; }
+  .header-body { padding: 20px; }
+  .header-stat { display: none; }
+  .wrap { padding: 20px 16px 60px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-stripe"></div>
+  <div class="loading-bar" id="loadingBar"></div>
+  <div class="header-body">
+    <div class="header-logo">📚</div>
+    <div class="header-info">
+      <h1>安心的教學點子</h1>
+      <div class="sub">IG 貼文檢索 · @annieteaching</div>
+    </div>
+    <div class="header-stat">
+      <div class="n" id="hCount">—</div>
+      <div class="l">篇貼文</div>
+    </div>
+  </div>
+</header>
+
+<div class="error-banner" id="errorBanner">
+  ⚠️ <span id="errorMsg">無法讀取試算表資料。</span>
+  請確認試算表已設為「知道連結的人都可以檢視」。
+</div>
+
+<div class="config-notice show" id="configNotice">
+  📋 <div>
+    請將下方的 <code>YOUR_SHEET_ID</code> 替換成你的 Google 試算表 ID，網頁才能自動讀取資料。<br>
+    <small style="color:#a05a0a; margin-top:4px; display:block;">試算表 ID 是網址中 /d/ 和 /edit 之間的那串字</small>
+  </div>
+</div>
+
+<div class="wrap">
+  <aside class="sidebar">
+    <div class="search-box">
+      <span class="s-icon">🔍</span>
+      <input type="text" id="q" placeholder="搜尋活動名稱、關鍵字⋯">
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">各課選文</div>
+      <div class="lesson-wrap">
+        <div class="search-box">
+          <span class="s-icon">📖</span>
+          <input type="text" id="lessonInput" placeholder="輸入課名，例：孔乙己" autocomplete="off">
+        </div>
+        <div class="lesson-dropdown" id="lessonDropdown"></div>
+      </div>
+      <div class="lesson-selected" id="lessonSelected"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">大類別</div>
+      <div class="chips" id="catChips"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">操作時間</div>
+      <div class="chips" id="timeChips"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">活動標籤（可多選）</div>
+      <div class="chips" id="tagChips"></div>
+    </div>
+
+    <button class="reset-btn" id="resetBtn">↺ 清除所有篩選</button>
+  </aside>
+
+  <main>
+    <div class="result-bar">
+      <div class="result-count">顯示 <strong id="showN">—</strong> 筆</div>
+      <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
+        <span class="r-icon">↻</span> 重新載入
+      </button>
+    </div>
+    <div class="grid" id="grid">
+      <div class="empty">
+        <div class="e-icon">⏳</div>
+        <p>正在從 Google 試算表載入資料⋯</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// ★ 請把下方 YOUR_SHEET_ID 換成你的試算表 ID
+//   試算表網址：https://docs.google.com/spreadsheets/d/【這裡】/edit
+const SHEET_ID = 'YOUR_SHEET_ID';
+// ★ 工作表名稱（預設是 "工作表1"，若有改名請一起改）
+const SHEET_NAME = '工作表1';
+// ═══════════════════════════════════════════════
+
+// CSV 欄位對應（順序要跟試算表 header 一致）
+// 貼文類型 | 活動名稱 | 大類別 | 課名 | 作者/書名 | 操作時間 | 標籤 | IG連結
+const COL = { type:0, name:1, category:2, lesson:3, author:4, time:5, tags:6, url:7 };
+
+let ALL = [];
+let LESSON_COUNT = {};
+let selLessons = new Set();
+let selCat = null, selTime = null;
+let selTags = new Set();
+let qText = '';
+
+// ── Load from Google Sheets (CSV export)
+async function loadData() {
+  if (SHEET_ID === 'YOUR_SHEET_ID') {
+    document.getElementById('configNotice').classList.add('show');
+    document.getElementById('grid').innerHTML = `
+      <div class="empty">
+        <div class="e-icon">⚙️</div>
+        <p>請先設定 Google 試算表 ID<br>
+        <small>打開這個 HTML 檔案，找到 <code style="background:#eee;padding:1px 5px;border-radius:3px">YOUR_SHEET_ID</code> 並替換成你的試算表 ID</small></p>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('configNotice').style.display = 'none';
+  document.getElementById('loadingBar').classList.add('active');
+  document.getElementById('refreshBtn').classList.add('spinning');
+  document.getElementById('errorBanner').classList.remove('show');
+
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    parseCSV(text);
+    buildFilters();
+    render();
+    document.getElementById('hCount').textContent = ALL.length;
+  } catch (e) {
+    document.getElementById('errorBanner').classList.add('show');
+    document.getElementById('errorMsg').textContent = `無法讀取試算表：${e.message}`;
+    console.error(e);
+  } finally {
+    document.getElementById('loadingBar').classList.remove('active');
+    document.getElementById('refreshBtn').classList.remove('spinning');
+  }
+}
+
+// ── Parse CSV
+function parseCSV(text) {
+  const rows = [];
+  let cur = '', inQ = false, row = [];
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c === '"') {
+      if (inQ && text[i+1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (c === ',' && !inQ) { row.push(cur.trim()); cur = ''; }
+    else if ((c === '\n' || c === '\r') && !inQ) {
+      row.push(cur.trim()); cur = '';
+      if (row.some(x => x)) rows.push(row);
+      row = [];
+      if (c === '\r' && text[i+1] === '\n') i++;
+    } else cur += c;
+  }
+  if (cur || row.length) { row.push(cur.trim()); if (row.some(x=>x)) rows.push(row); }
+
+  // Skip header row
+  ALL = rows.slice(1)
+    .filter(r => r[COL.name] && r[COL.name] !== '活動名稱')
+    .map(r => ({
+      type:     r[COL.type]     || '',
+      name:     r[COL.name]     || '',
+      category: r[COL.category] || '',
+      lesson:   r[COL.lesson]   || '',
+      author:   r[COL.author]   || '',
+      time:     r[COL.time]     || '',
+      tags:     r[COL.tags]     || '',
+      url:      r[COL.url]      || '',
+    }));
+
+  // Build lesson count
+  LESSON_COUNT = {};
+  ALL.forEach(r => {
+    if (r.lesson) LESSON_COUNT[r.lesson] = (LESSON_COUNT[r.lesson]||0) + 1;
+  });
+}
+
+// ── Build filter chips (called after data loaded)
+let filtersBuilt = false;
+function buildFilters() {
+  if (filtersBuilt) return;
+  filtersBuilt = true;
+
+  const CATS  = ['各課都可以用','各課選文','選修課','創作'];
+  const TIMES = ['半節課以內','一節課以內','一節課以上','備課資料','活動設計','出題'];
+  const TAGS  = ['引起動機','遊戲競賽','桌遊團康','角色扮演','密室逃脫','數位媒材',
+                 '素養應用','多元評量','溝通表達','閱讀策略','跨域議題','情意教學','反思探究'];
+
+  buildChipGroup('catChips',  CATS,  v => { selCat  = selCat  === v ? null : v; render(); });
+  buildChipGroup('timeChips', TIMES, v => { selTime = selTime === v ? null : v; render(); });
+
+  const tagEl = document.getElementById('tagChips');
+  tagEl.innerHTML = '';
+  TAGS.forEach(t => {
+    const c = chip(t, () => { selTags.has(t) ? selTags.delete(t) : selTags.add(t); render(); });
+    c.dataset.tag = t;
+    tagEl.appendChild(c);
+  });
+}
+
+function buildChipGroup(id, values, onClick) {
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+  values.forEach(v => {
+    const c = chip(v, () => onClick(v));
+    c.dataset.v = v;
+    el.appendChild(c);
+  });
+}
+
+function chip(label, onClick) {
+  const c = document.createElement('button');
+  c.className = 'chip'; c.textContent = label;
+  c.addEventListener('click', onClick);
+  return c;
+}
+
+// ── Lesson autocomplete
+const lessonInput = document.getElementById('lessonInput');
+const lessonDropdown = document.getElementById('lessonDropdown');
+
+function updateLessonDropdown() {
+  const q = lessonInput.value.trim().toLowerCase();
+  const lessons = Object.keys(LESSON_COUNT).sort();
+  const matches = q
+    ? lessons.filter(l => l.toLowerCase().includes(q) && !selLessons.has(l))
+    : lessons.filter(l => !selLessons.has(l));
+
+  if (!matches.length || (!q && !lessonInput.matches(':focus'))) {
+    lessonDropdown.classList.remove('open'); return;
+  }
+  lessonDropdown.innerHTML = matches.slice(0, 40).map(l =>
+    `<div class="lesson-opt" data-l="${l}">
+      <span>${l}</span><span class="cnt">${LESSON_COUNT[l]} 篇</span>
+    </div>`).join('');
+  lessonDropdown.classList.add('open');
+  lessonDropdown.querySelectorAll('.lesson-opt').forEach(el =>
+    el.addEventListener('mousedown', e => { e.preventDefault(); addLesson(el.dataset.l); }));
+}
+
+function addLesson(l) {
+  selLessons.add(l); lessonInput.value = '';
+  lessonDropdown.classList.remove('open');
+  renderLessonTags(); render();
+}
+
+window.removeLesson = function(l) {
+  selLessons.delete(l); renderLessonTags(); render();
+};
+
+function renderLessonTags() {
+  document.getElementById('lessonSelected').innerHTML = [...selLessons].map(l =>
+    `<span class="lesson-tag">${l}<button onclick="removeLesson('${l}')" title="移除">✕</button></span>`
+  ).join('');
+}
+
+lessonInput.addEventListener('input', updateLessonDropdown);
+lessonInput.addEventListener('focus', updateLessonDropdown);
+lessonInput.addEventListener('blur', () => setTimeout(() => lessonDropdown.classList.remove('open'), 150));
+
+// ── Search
+document.getElementById('q').addEventListener('input', e => { qText = e.target.value.trim(); render(); });
+
+// ── Reset
+document.getElementById('resetBtn').onclick = () => {
+  qText = ''; selCat = null; selTime = null; selTags.clear(); selLessons.clear();
+  document.getElementById('q').value = '';
+  lessonInput.value = '';
+  lessonDropdown.classList.remove('open');
+  renderLessonTags(); render();
+};
+
+// ── Type class
+function tc(type) {
+  return ['教學活動','主題式備課法','備課','論文輕閱讀','寫作教學','板書分享'].includes(type) ? type : 'other';
+}
+
+// ── Render
+function render() {
+  document.querySelectorAll('#catChips .chip').forEach(c => c.classList.toggle('on', c.dataset.v === selCat));
+  document.querySelectorAll('#timeChips .chip').forEach(c => c.classList.toggle('on', c.dataset.v === selTime));
+  document.querySelectorAll('#tagChips .chip').forEach(c => c.classList.toggle('on', selTags.has(c.dataset.tag)));
+
+  const q = qText.toLowerCase();
+  const filtered = ALL.filter(r => {
+    if (selCat && r.category !== selCat) return false;
+    if (selTime && r.time !== selTime) return false;
+    if (selLessons.size > 0 && !selLessons.has(r.lesson)) return false;
+    if (selTags.size > 0) {
+      const rt = r.tags.split('、').map(x => x.trim());
+      if (![...selTags].every(t => rt.includes(t))) return false;
+    }
+    if (q) {
+      const hay = (r.name + r.lesson + r.author + r.tags + r.category + r.type).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('showN').textContent = filtered.length;
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty"><div class="e-icon">🔎</div><p>找不到符合條件的貼文<br>試試調整篩選條件</p></div>`;
+    return;
+  }
+
+  filtered.forEach((r, i) => {
+    const t = tc(r.type);
+    const tags = r.tags ? r.tags.split('、').map(x => x.trim()).filter(Boolean) : [];
+    const sub = [r.author, r.lesson].filter(Boolean).join(' · ');
+
+    const card = document.createElement('div');
+    card.className = 'card'; card.dataset.t = t;
+    card.style.animationDelay = Math.min(i * 0.025, 0.35) + 's';
+    card.innerHTML = `
+      <div class="card-top">
+        <span class="badge bt-${t}">${r.type || '其他'}</span>
+        <span class="card-name">${r.name}</span>
+      </div>
+      ${sub ? `<div class="card-lesson">📖 ${sub}</div>` : ''}
+      ${tags.length ? `<div class="card-tags">${tags.map(tag =>
+        `<span class="tag ${selTags.has(tag)?'hi':''}">${tag}</span>`).join('')}</div>` : ''}
+      <div class="card-footer">
+        ${r.time ? `<span class="card-time">⏱ ${r.time}</span>` : '<span></span>'}
+        ${r.url
+          ? `<a class="ig-link" href="${r.url}" target="_blank" rel="noopener">前往 IG 貼文 →</a>`
+          : `<span class="ig-link na">尚未發布</span>`}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── Init
+loadData();
+</script>
+</body>
+</html>
